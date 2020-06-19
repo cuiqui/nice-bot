@@ -1,0 +1,17 @@
+Source: nice-bot
+Section: devel
+Priority: optional
+Maintainer: Juan Schandin <juan.schandin@filo.uba.ar>
+Build-Depends: debhelper (>= 9),
+               python3.7,
+               python3.7-dev,
+               python3.7-venv,
+               python-pip,
+               dh-virtualenv (>= 0.8),
+               dh-systemd
+Standards-Version: 3.7.2
+
+Package: nice-bot
+Architecture: all
+Depends: python3.7, python3.7-dev
+Description: Discord niceness tracker

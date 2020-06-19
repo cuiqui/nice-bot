@@ -1,0 +1,5 @@
+discord.py
+confight
+matplotlib
+pandas
+pid

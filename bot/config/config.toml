@@ -1,0 +1,21 @@
+[bot]
+    # Token to connect with discord API
+    token = 'NzIyMTUxNjI4MzI0NjAxOTY2.Xue-dg.Arq58abhiY36n4n0fzMEJJsq-9U'
+
+    # CSV to use as database
+    csv = '/var/lib/nice-bot/db.csv'
+
+[logging]
+    # logging.config.dictConfig configuration
+    version = 1
+    [logging.formatters]
+        [logging.formatters.default]
+            format = '[%(asctime)s] [%(levelname)s] %(message)s'
+    [logging.handlers]
+        [logging.handlers.file]
+            class = 'logging.FileHandler'
+            formatter = 'default'
+            filename = '/var/log/nice-bot/bot.log'
+    [logging.root]
+        handlers = ['file']
+        level = 'INFO'

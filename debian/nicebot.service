@@ -1,0 +1,13 @@
+[Unit]
+Description=NiceBot
+After=network.target
+
+[Service]
+User=nicebot
+Group=nicebot
+ExecStart=/usr/bin/nicebot
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

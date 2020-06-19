@@ -1,0 +1,26 @@
+#!/bin/bash -eu
+
+function fix_permissions {
+    useradd nicebot || true
+    chown nicebot:nicebot -R /opt/nice-bot
+    chown nicebot:nicebot -R /var/lib/nice-bot
+    chown nicebot:nicebot -R /var/log/nice-bot
+}
+
+case "$1" in
+    configure)
+        fix_permissions
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        echo "postinst not doing anything for \`$1`" >&2
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1`" >&2
+    ;;
+esac
+
+# dh-virtualenv uses this marker
+declare -r DH_VERBOSE=0
+#DEBHELPER#
