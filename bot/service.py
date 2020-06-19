@@ -6,21 +6,18 @@ import logging.config
 import confight
 from pid import PidFile, PidFileError
 
-from bot.bot import NiceBot
-from bot.data import DataProxy
+from bot.bootstrap import Bootstrap
 
 
 class Service:
     def start(self) -> None:
         config = confight.load_app('nice-bot', extension='toml')
-        logging.config.dictConfig(config['logging'])
         signal.signal(signal.SIGINT, self.shutdown)
-        logging.info('Running nice-bot')
-        bot = NiceBot(
-            config=config['bot'],
-            dp=DataProxy(config=config['bot'])
-        )
-        bot.run()
+        bootstrap = Bootstrap(config)
+        bot, dp = bootstrap.bot, bootstrap.dp
+        logging.info('Starting nice-bot')
+        logging.info('Database shape: %r', dp.df.shape)
+        bot.run(config['bot']['token'])
 
     def shutdown(self, _signal, _stack) -> None:
         logging.info('SIGINT received')

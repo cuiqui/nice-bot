@@ -3,7 +3,7 @@ import datetime
 from enum import Enum
 from random import choice
 from dataclasses import dataclass
-from typing import Dict, Any, Tuple, List, Callable
+from typing import Dict, Any, Type, Tuple, List, Callable
 
 import pandas
 
@@ -21,12 +21,21 @@ class DataProxy:
 
     @property
     def df(self):
-        return pandas.read_csv(self.config['csv'])
+        return pandas.read_csv(
+            self.config['csv'],
+            names=[col.value for col in Columns],
+            parse_dates=[Columns.DATE.value]
+    )
 
-    def get_data_quote(self) -> str:
+    def get_data_quote(self) -> Tuple[datetime.datetime, str]:
         df = self.df
-        return choice(
-            df[[Columns.RECEIVER, Columns.QUOTE]][df.quote.notna()]
+        ntuple = choice(list(
+            df[[Columns.DATE.value, Columns.QUOTE.value]]
+              [df.quote.notna()].itertuples()
+        ))
+        return (
+            getattr(ntuple, Columns.DATE.value),
+            getattr(ntuple, Columns.QUOTE.value)
         )
 
     def get_data_metrics(
@@ -57,4 +66,4 @@ class DataProxy:
         )
         df = pandas.DataFrame(data=data)
         logging.debug('Appending to %s:\n%r', self.config['csv'], df)
-        df.to_csv('my_csv2.csv', mode='a', header=False, index=False)
+        df.to_csv(self.config['csv'], mode='a', header=False, index=False)

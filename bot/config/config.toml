@@ -1,6 +1,6 @@
 [bot]
     # Token to connect with discord API
-    token = 'NzIyMTUxNjI4MzI0NjAxOTY2.Xue-dg.Arq58abhiY36n4n0fzMEJJsq-9U'
+    token = ''
 
     # CSV to use as database
     csv = '/var/lib/nice-bot/db.csv'
@@ -19,3 +19,4 @@
     [logging.root]
         handlers = ['file']
         level = 'INFO'
+
