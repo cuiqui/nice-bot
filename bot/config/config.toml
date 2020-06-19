@@ -2,7 +2,7 @@
     # Token to connect with discord API
     token = ''
 
-    # CSV to use as database
+    # Path to CSV database
     csv = '/var/lib/nice-bot/db.csv'
 
 [logging]

@@ -3,12 +3,13 @@ import datetime
 from enum import Enum
 from random import choice
 from dataclasses import dataclass
-from typing import Dict, Any, Type, Tuple, List, Callable
+from typing import Dict, Any, Tuple, List, Callable, Union
 
 import pandas
 
 
 class Columns(Enum):
+    SERVER = 'server'
     DATE = 'date'
     SENDER = 'sender'
     RECEIVER = 'receiver'
@@ -21,31 +22,41 @@ class DataProxy:
 
     @property
     def df(self):
-        return pandas.read_csv(
-            self.config['csv'],
-            names=[col.value for col in Columns],
-            parse_dates=[Columns.DATE.value]
-    )
+        try:
+            return pandas.read_csv(
+                self.config['csv'],
+                names=[col.value for col in Columns],
+                parse_dates=[Columns.DATE.value]
+            )
+        except FileNotFoundError:
+            return pandas.DataFrame(columns=[col.value for col in Columns])
 
-    def get_data_quote(self) -> Tuple[datetime.datetime, str]:
+    def get_data_quote(
+            self, srv: int
+    ) -> Union[Tuple[datetime.datetime, str], Tuple[None, None]]:
         df = self.df
-        ntuple = choice(list(
+        ntuple = list(
             df[[Columns.DATE.value, Columns.QUOTE.value]]
-              [df.quote.notna()].itertuples()
-        ))
-        return (
-            getattr(ntuple, Columns.DATE.value),
-            getattr(ntuple, Columns.QUOTE.value)
+              [((df[Columns.SERVER.value] == srv) &
+                (df[Columns.QUOTE.value].notna()))].itertuples()
         )
+        if ntuple:
+            quote = choice(ntuple)
+            return (
+                getattr(quote, Columns.DATE.value),
+                getattr(quote, Columns.QUOTE.value)
+            )
+        return None, None
 
     def get_data_metrics(
-        self, fmt_user: Callable[[int], str]
+        self, srv: int, fmt_user: Callable[[int], str]
     ) -> Dict[Columns, List[Tuple[str, int]]]:
+        df = self.df
         top = {}
         for utype in [Columns.SENDER, Columns.RECEIVER]:
             top[utype] = [
                 (fmt_user(k), v)
-                for k, v in self.df
+                for k, v in df[df[Columns.SERVER.value] == srv]
                     .groupby(utype.value)
                     .size()
                     .sort_values(ascending=False)
@@ -55,10 +66,11 @@ class DataProxy:
         return top
 
     def store(
-            self, date: datetime.datetime, author: int,
-            mentions: List[int], quote: str = ''
+            self, srv: int, date: datetime.datetime,
+            author: int, mentions: List[int], quote: str = ''
     ) -> None:
         data = zip(
+            [srv] * (len(mentions) or 1),
             [date] * (len(mentions) or 1),
             [author] * (len(mentions) or 1),
             mentions or [-1],

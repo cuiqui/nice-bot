@@ -17,15 +17,15 @@ class Commands(Cog):
 
     @command(name='nice-wisdom', help='Retrieve random nice quote')
     async def quote(self, ctx):
-        date, quote = self.dp.get_data_quote()
+        date, quote = self.dp.get_data_quote(srv=ctx.guild.id)
         d_fmt = 'Heard on a %c'
         embed = Embed(
             title='Nice wisdom',
             colour=0x00b2ff,
         )
         embed.add_field(
-            name=f'{date.strftime(d_fmt)}:',
-            value=quote
+            name=f'{date.strftime(d_fmt) if date else "N/A"}:',
+            value=quote or "N/A"
         )
         await ctx.send(embed=embed)
 
@@ -36,7 +36,8 @@ class Commands(Cog):
             colour=0x00b2ff,
         )
         data = self.dp.get_data_metrics(
-            lambda uid: self.bot.get_user(uid).name
+            srv=ctx.guild.id,
+            fmt_user=lambda uid: self.bot.get_user(uid).name
         )
         for k, v in data.items():
             board = generate_board(v)

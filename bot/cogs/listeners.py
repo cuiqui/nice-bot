@@ -5,8 +5,6 @@ from typing import Tuple
 from discord import Message
 from discord.ext.commands import Cog
 
-from bot.data import Columns
-
 
 NICE_REGEX = re.compile('(?<!\S)n+i+c+e+(?!\S)', re.IGNORECASE)
 
@@ -32,14 +30,15 @@ class Listeners(Cog):
         content, quote = process_message(msg)
 
         if NICE_REGEX.search(content):
-            row = {
+            data = {
+                'srv': msg.guild.id,
                 'date': msg.created_at,
                 'author': msg.author.id,
                 'mentions': [mem.id for mem in msg.mentions],
                 'quote': quote
             }
-            logging.info('Storing entry: %r', row)
-            self.dp.store(**row)
+            logging.info('Storing entry: %r', data)
+            self.dp.store(**data)
             await msg.channel.send(f'{msg.author.mention} 𝓷𝓲𝓬𝓮  ☜(ﾟヮﾟ☜)')
 
 
