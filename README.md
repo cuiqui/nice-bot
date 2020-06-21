@@ -1,6 +1,8 @@
 # nice-bot
 Discord niceness bot tracker. It will keep track of every nice comment made within the case insensitive regex: `(?<!\S)n+i+c+e+(?!\S)`, in a context-free grammar. If it has any mentions or quotes, it will also keep track of them.
 
+One service of the bot supports being included in multiple servers, metrics and quotes won't collide. Bare in mind that it is not meant to be used in 200 servers with 5000 members each; I mean, if `pandas` can support it then you're free to try, but whatever, man.
+
 ### Install
 It's a debian package, you should do it inside a virtual environment.
 
