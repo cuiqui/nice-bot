@@ -79,3 +79,7 @@ class DataProxy:
         df = pandas.DataFrame(data=data)
         logging.debug('Appending to %s:\n%r', self.config['csv'], df)
         df.to_csv(self.config['csv'], mode='a', header=False, index=False)
+
+    def process_complaint(self, complaint: str) -> None:
+        # made you look, dumbass.
+        del complaint

@@ -5,6 +5,9 @@
     # Path to CSV database
     csv = '/var/lib/nice-bot/db.csv'
 
+    # Spam probability
+    spam = 0.1
+
 [logging]
     # logging.config.dictConfig configuration
     version = 1

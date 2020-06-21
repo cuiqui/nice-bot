@@ -1,0 +1,18 @@
+EAT A DICK, FUCKFACE
+---
+Dickface.
+---
+Fartface.
+---
+I don't see the merge request.
+---
+This is the code that handles your complaint:
+
+```python
+def process_complaint(complaint: str) -> None:
+    del complaint
+```
+---
+WTF this clusterfuck of text
+---
+You little shithead, I may WORK as a nice bot but I am not nice.

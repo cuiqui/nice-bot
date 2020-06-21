@@ -27,7 +27,7 @@ class Bootstrap:
     def configure_bot(self):
         bot = Bot(command_prefix='!')
         cogs = [
-            Listeners(bot, self.dp),
+            Listeners(bot, self.dp, self.config['bot']),
             Commands(bot, self.dp)
         ]
         for cog in cogs:

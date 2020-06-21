@@ -1,6 +1,8 @@
 import io
-from typing import Tuple
+import random
+from typing import Tuple, Union
 from functools import partial
+from pkg_resources import resource_filename
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
@@ -55,6 +57,15 @@ class Commands(Cog):
             ctx.send = partial(ctx.send, file=plot)
         await ctx.send(embed=embed)
 
+    @command(name='bad-bot', help='Help us improve!')
+    async def complaint(self, ctx, content: str):
+        self.dp.process_complaint(content)
+        comeback = get_comeback()
+        if isinstance(comeback, File):
+            await ctx.send(file=comeback)
+        else:
+            await ctx.send(comeback)
+
 
 def generate_board(data: Tuple[str, int]) -> str:
     board = ''
@@ -79,3 +90,21 @@ def generate_plot(data: Tuple[str, int]) -> io.BytesIO:
     fig.savefig(buf, transparent=True, format='png')
     buf.seek(0)
     return buf
+
+
+def get_comeback() -> Union[str, File]:
+    if random.random() < 0.1:
+        with open(
+                file=resource_filename(
+                    'bot', 'resources/invisible_typewriter.gif'
+                ),
+                mode='rb'
+        ) as f:
+            picture = File(f)
+        return picture
+    with open(
+            file=resource_filename('bot', 'resources/comebacks.txt'),
+            mode='r'
+    ) as f:
+        content = [block.strip() for block in f.read().split('---')]
+    return random.choice(content)
