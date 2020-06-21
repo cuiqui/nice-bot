@@ -42,13 +42,13 @@ class Listeners(Cog):
             }
             logging.info('Storing entry: %r', data)
             self.dp.store(**data)
-            if random.random() < self.config['spams']:
+            if random.random() < self.config['spam']:
                 await msg.channel.send(f'{msg.author.mention} {get_spam()}')
 
 
 def get_spam() -> str:
     with open(
-            file=resource_filename('bot', 'resources/spam.txt'),
+            file=resource_filename('bot', 'resources/spams.txt'),
             mode='r'
     ) as f:
         content = [block.strip() for block in f.read().split('---')]

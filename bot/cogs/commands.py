@@ -57,7 +57,7 @@ class Commands(Cog):
             ctx.send = partial(ctx.send, file=plot)
         await ctx.send(ctx.author.mention, embed=embed)
 
-    @command(name='bad-bot', help='Help us improve!')
+    @command(name='bad-bot', help='<feedback: str> Help us improve!')
     async def complaint(self, ctx, content: str):
         self.dp.process_complaint(content)
         comeback = get_comeback()
