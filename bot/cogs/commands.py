@@ -55,16 +55,16 @@ class Commands(Cog):
             )
             embed.set_image(url=f'attachment://graph.png')
             ctx.send = partial(ctx.send, file=plot)
-        await ctx.send(embed=embed)
+        await ctx.send(ctx.author.mention, embed=embed)
 
     @command(name='bad-bot', help='Help us improve!')
     async def complaint(self, ctx, content: str):
         self.dp.process_complaint(content)
         comeback = get_comeback()
         if isinstance(comeback, File):
-            await ctx.send(file=comeback)
+            await ctx.send(ctx.author.mention, file=comeback)
         else:
-            await ctx.send(comeback)
+            await ctx.send(f'{ctx.author.mention} {comeback}')
 
 
 def generate_board(data: Tuple[str, int]) -> str:

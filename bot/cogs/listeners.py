@@ -42,7 +42,7 @@ class Listeners(Cog):
             }
             logging.info('Storing entry: %r', data)
             self.dp.store(**data)
-            if random.random() < self.config['spam']:
+            if random.random() < self.config['spams']:
                 await msg.channel.send(f'{msg.author.mention} {get_spam()}')
 
 
