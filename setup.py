@@ -5,6 +5,7 @@ setup(
     name='nice-bot',
     version='0.1',
     packages=find_packages(),
+    package_data={'bot': ['resources/*']},
     url='https://github.com/cuiqui/nice-bot',
     license='MIT',
     author='Juan Schandin',
