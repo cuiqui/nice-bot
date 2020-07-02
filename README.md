@@ -63,7 +63,7 @@ Secrets and other overrides should be put inside `conf.d` folder in order to gua
       nice-metrics Retrieve nice leaderboard
       nice-wisdom  Retrieve random nice quote
     No Category:
-      help         Shows this message
+      nice-help         Shows this message
 
     Type !help command for more info on a command.
     You can also type !help category for more info on a category.

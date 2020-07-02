@@ -25,7 +25,7 @@ class Bootstrap:
         self.dp = DataProxy(config=self.config['bot'])
 
     def configure_bot(self):
-        bot = Bot(command_prefix='!')
+        bot = Bot(command_prefix='!', help_attrs={'name': 'nice-help'})
         cogs = [
             Listeners(bot, self.dp, self.config['bot']),
             Commands(bot, self.dp)
