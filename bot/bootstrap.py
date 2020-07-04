@@ -3,7 +3,7 @@ import logging.config
 from typing import Mapping
 from dataclasses import dataclass, field
 
-from discord.ext.commands import Bot
+from discord.ext.commands import Bot, DefaultHelpCommand
 
 from bot.data import DataProxy
 from bot.cogs.commands import Commands
@@ -25,7 +25,8 @@ class Bootstrap:
         self.dp = DataProxy(config=self.config['bot'])
 
     def configure_bot(self):
-        bot = Bot(command_prefix='!')
+        hc = DefaultHelpCommand(command_attrs={'name':'nice-help'})
+        bot = Bot(command_prefix='!', help_command=hc)
         cogs = [
             Listeners(bot, self.dp, self.config['bot']),
             Commands(bot, self.dp)
