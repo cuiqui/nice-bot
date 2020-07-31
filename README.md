@@ -59,9 +59,10 @@ Secrets and other overrides should be put inside `conf.d` folder in order to gua
 
 ### Interface
     Commands:
-      bad-bot      <feedback: str> Help us improve!
-      nice-metrics Retrieve nice leaderboard
-      nice-wisdom  Retrieve random nice quote
+      bad-bot          <feedback: str> Help us improve!
+      my-nice-messages Retrieve the messages that made people go like 'nice'
+      nice-metrics     Retrieve nice leaderboard
+      nice-wisdom      Retrieve random nice quote
     No Category:
       nice-help         Shows this message
 
