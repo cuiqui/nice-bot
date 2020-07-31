@@ -83,3 +83,9 @@ class DataProxy:
     def process_complaint(self, complaint: str) -> None:
         # made you look, dumbass.
         del complaint
+
+    def get_all_nice_messages(self, srv: int, author_id: int):
+        df = self.df
+        quotes = df[(df[Columns.RECEIVER.value] == author_id) &
+                    (df[Columns.SERVER.value] == srv)]
+        return quotes[Columns.QUOTE.value].to_list()
