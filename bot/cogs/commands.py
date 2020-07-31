@@ -66,6 +66,20 @@ class Commands(Cog):
         else:
             await ctx.send(f'{ctx.author.mention} {comeback}')
 
+    @command(name='my-nice-messages', help='Retrieve the messages that made people go like \'nice\'')
+    async def my_nice_messages(self, ctx):
+        author_id = ctx.author.id
+        srv = ctx.guild.id
+        messages = self.dp.get_all_nice_messages(srv=srv, author_id=author_id)
+        embed = Embed(
+            title='Your nice messages',
+            colour=0x00b2ff,
+        )
+        embed.add_field(
+            name='These are the messages that had everyone going like \'nice\':',
+            value='\n'.join(messages)
+        )
+        await ctx.send(embed=embed)
 
 def generate_board(data: Tuple[str, int]) -> str:
     board = ''
@@ -95,16 +109,16 @@ def generate_plot(data: Tuple[str, int]) -> io.BytesIO:
 def get_comeback() -> Union[str, File]:
     if random.random() < 0.1:
         with open(
-                file=resource_filename(
-                    'bot', 'resources/invisible_typewriter.gif'
-                ),
-                mode='rb'
+            file=resource_filename(
+                'bot', 'resources/invisible_typewriter.gif'
+            ),
+            mode='rb'
         ) as f:
             picture = File(f)
         return picture
     with open(
-            file=resource_filename('bot', 'resources/comebacks.txt'),
-            mode='r'
+        file=resource_filename('bot', 'resources/comebacks.txt'),
+        mode='r'
     ) as f:
         content = [block.strip() for block in f.read().split('---')]
     return random.choice(content)
