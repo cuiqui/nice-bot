@@ -68,18 +68,32 @@ class Commands(Cog):
 
     @command(name='my-nice-messages', help='Retrieve the messages that made people go like \'nice\'')
     async def my_nice_messages(self, ctx):
-        author_id = ctx.author.id
-        srv = ctx.guild.id
+        embed = self._get_message_history(ctx.author.id, ctx.author.name, ctx.guild.id)
+        await ctx.send(embed=embed)
+
+    @command(name='nice-messages', help="Retrieve messages that made people go like 'nice' by user")
+    async def nice_messages(self, ctx):
+        mentions = ctx.message.mentions
+        if not mentions:
+            await ctx.send("Please mention someone to get their nice messages.")
+        elif len(mentions) > 1:
+            await ctx.send("You can only check the messages of one person at a time.")
+        else:
+            target = mentions[0]
+            embed = self._get_message_history(target.id, target.name, ctx.guild.id)
+            await ctx.send(embed=embed)
+
+    def _get_message_history(self, author_id: int, author_name: str, srv: int) -> Embed:
         messages = self.dp.get_all_nice_messages(srv=srv, author_id=author_id)
         embed = Embed(
-            title='Your nice messages',
+            title=f'{author_name} nice messages',
             colour=0x00b2ff,
         )
         embed.add_field(
             name='These are the messages that had everyone going like \'nice\':',
             value='\n'.join(messages)
         )
-        await ctx.send(embed=embed)
+        return embed
 
 def generate_board(data: Tuple[str, int]) -> str:
     board = ''
