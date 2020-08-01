@@ -84,8 +84,9 @@ class DataProxy:
         # made you look, dumbass.
         del complaint
 
-    def get_all_nice_messages(self, srv: int, author_id: int):
+    def get_all_nice_messages(self, srv: int, author_id: int) -> List[Any]:
         df = self.df
         quotes = df[(df[Columns.RECEIVER.value] == author_id) &
-                    (df[Columns.SERVER.value] == srv)]
+                    (df[Columns.SERVER.value] == srv) &
+                    (df[Columns.QUOTE.value].notna())]
         return quotes[Columns.QUOTE.value].to_list()
