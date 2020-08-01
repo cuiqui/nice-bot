@@ -66,12 +66,12 @@ class Commands(Cog):
         else:
             await ctx.send(f'{ctx.author.mention} {comeback}')
 
-    @command(name='my-nice-messages', help='Retrieve the messages that made people go like \'nice\'')
+    @command(name='my-nice-messages', help='Retrieve messages that made people go like \'nice\'')
     async def my_nice_messages(self, ctx):
         embed = self._get_message_history(ctx.author.id, ctx.author.name, ctx.guild.id)
         await ctx.send(embed=embed)
 
-    @command(name='nice-messages', help="Retrieve messages that made people go like 'nice' by user")
+    @command(name='nice-messages', help="<user: @mention> Retrieve messages that made people go like 'nice' by user")
     async def nice_messages(self, ctx):
         mentions = ctx.message.mentions
         if not mentions:
