@@ -98,8 +98,8 @@ class Commands(Cog):
     @command(name='nice-fact', help='Cheers you up with a nice wholesome beautiful sweet sugary random fact ( ⋂‿⋂’).')
     async def nice_fact(self, ctx):
         fact = get_fact()
-        if isinstance(facts, File):
-            await ctx.send(ctx.author.mention, file=facts)
+        if isinstance(fact, File):
+            await ctx.send(ctx.author.mention, file=fact)
         else:
             await ctx.send(f'{ctx.author.mention} {fact}')
 
