@@ -96,7 +96,7 @@ class Commands(Cog):
         return embed
 
     @command(name='nice-fact', help='Cheers you up with a nice wholesome beautiful sweet sugary random fact ( ⋂‿⋂’).')
-    async def nice_facts(self, ctx):
+    async def nice_fact(self, ctx):
         fact = get_fact()
         if isinstance(facts, File):
             await ctx.send(ctx.author.mention, file=facts)
@@ -163,4 +163,3 @@ def get_fact() -> Union[str, File]:
     ) as f:
         content = [block.strip() for block in f.read().split('---')]
     return random.choice(content)
-    
