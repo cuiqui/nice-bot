@@ -95,6 +95,15 @@ class Commands(Cog):
         )
         return embed
 
+    @command(name='nice-fact', help='Cheers you up with a nice wholesome beautiful sweet sugary random fact ( ⋂‿⋂’).')
+    async def nice_facts(self, ctx):
+        fact = get_fact()
+        if isinstance(facts, File):
+            await ctx.send(ctx.author.mention, file=facts)
+        else:
+            await ctx.send(f'{ctx.author.mention} {fact}')
+
+
 def generate_board(data: Tuple[str, int]) -> str:
     board = ''
     for i, score in enumerate(data, start=1):
@@ -132,6 +141,24 @@ def get_comeback() -> Union[str, File]:
         return picture
     with open(
         file=resource_filename('bot', 'resources/comebacks.txt'),
+        mode='r'
+    ) as f:
+        content = [block.strip() for block in f.read().split('---')]
+    return random.choice(content)
+
+
+def get_fact() -> Union[str, File]:
+    if random.random() < 0.1:
+        with open(
+            file=resource_filename(
+                'bot', 'resources/nicethumbsup.gif'
+            ),
+            mode='rb'
+        ) as f:
+            picture = File(f)
+        return picture
+    with open(
+        file=resource_filename('bot', 'resources/facts.txt'),
         mode='r'
     ) as f:
         content = [block.strip() for block in f.read().split('---')]
