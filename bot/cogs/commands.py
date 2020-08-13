@@ -163,3 +163,4 @@ def get_fact() -> Union[str, File]:
     ) as f:
         content = [block.strip() for block in f.read().split('---')]
     return random.choice(content)
+    
