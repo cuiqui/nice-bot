@@ -1,5 +1,7 @@
 import io
 import random
+import requests
+import json
 from typing import Tuple, Union
 from functools import partial
 from pkg_resources import resource_filename
@@ -10,6 +12,7 @@ from discord import Embed, File
 from discord.ext.commands import Cog, command
 
 from bot.data import Columns
+from bot.eloAOE import get_player_history, PlayerNotFound, generate_elo_plot, SOLO_GAME_MODE, TEAM_GAME_MODE
 
 
 class Commands(Cog):
@@ -103,6 +106,39 @@ class Commands(Cog):
         else:
             await ctx.send(f'{ctx.author.mention} {fact}')
 
+    @command(name='nice-elo', help='Returns elo niceness evolution')
+    async def elo_solo_niceness(self, ctx, playerName, matches = 100):
+        await ctx.trigger_typing()
+        try:
+            [plot, embed, axesData] = plot_elo_niceness(playerName, matches, SOLO_GAME_MODE)
+        except PlayerNotFound:
+            await ctx.send('Couldn\'t find any player called: ' + playerName)
+            return
+        ctx.send = partial(ctx.send, file=plot)
+        await ctx.send(embed=embed)
+        if (axesData['taunt']):
+            ctx.send = partial(ctx.send, file=None)
+            await ctx.send(axesData['taunt'])
+
+    @command(name='nice-team-elo', help='Returns team elo niceness evolution')
+    async def elo_shared_niceness(self, ctx, playerName, matches = 100):
+        await ctx.trigger_typing()
+        try:
+            [plot, embed, axesData] = plot_elo_niceness(playerName, matches, TEAM_GAME_MODE)
+        except PlayerNotFound:
+            await ctx.send('Couldn\'t find any player called: ' + playerName)
+            return
+        ctx.send = partial(ctx.send, file=plot)
+        await ctx.send(embed=embed)
+        if (axesData['taunt']):
+            ctx.send = partial(ctx.send, file=None)
+            await ctx.send(axesData['taunt'])
+
+def plot_elo_niceness(playerName, matches, gameMode = SOLO_GAME_MODE):
+    axesData = get_player_history(playerName, matches, gameMode)
+    [plot, embed] = generate_elo_plot(axesData)
+    return [plot, embed, axesData]
+
 
 def generate_board(data: Tuple[str, int]) -> str:
     board = ''
@@ -163,3 +199,4 @@ def get_fact() -> Union[str, File]:
     ) as f:
         content = [block.strip() for block in f.read().split('---')]
     return random.choice(content)
+

@@ -3,3 +3,4 @@ confight
 matplotlib
 pandas
 pid
+requests
