@@ -17,10 +17,11 @@ It's a debian package, you should do it inside a virtual environment.
 
 #### Poetry route (for development)
 
-0. Install (Poetry)[https://python-poetry.org/docs/]
+If you have [Poetry](https://python-poetry.org/docs/) installed:
+
 1. Clone repository.
 2. `poetry install` to generate venv with dependencies.
-3. `./scripts/install.sh` to create necessary directories.
+3. `bash scripts/install.sh` to create necessary directories.
 4. `poetry run nicebot` to start the bot service.
 
 ### Usage
