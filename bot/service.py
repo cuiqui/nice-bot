@@ -34,3 +34,6 @@ def main() -> None:
     except PidFileError:
         logging.error('Nice-bot is already running')
         raise
+
+if __name__ == "__main__":
+    main()
